@@ -15,8 +15,14 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from core.views import upload_video,home
+from django.conf import settings
+from django.conf.urls.static import static
+from django.urls import path, include  # Add include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-]
+    path('', home, name='home'),  # Home page URL
+    path('upload/', upload_video, name='upload_video'),  # Video upload URL
+    path('accounts/', include('allauth.urls')),  # Add this line for Allauth
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
