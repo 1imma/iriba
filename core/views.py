@@ -55,13 +55,14 @@ def profile(request, username):
     return render(request, 'profile.html', {'profile_user': user, 'videos': videos})
 
 
+@login_required
 def add_comment(request, video_id):
-    video = get_object_or_404(Video, id=video_id)
+    video = get_object_or_404(Video, id=video_id)  # Get the video being commented on
     if request.method == 'POST':
         form = CommentForm(request.POST)
         if form.is_valid():
-            comment = form.save(commit=False)
-            comment.user = request.user
-            comment.video = video
-            comment.save()
-    return redirect('content_feed')
+            comment = form.save(commit=False)  # Don't save to the database yet
+            comment.user = request.user  # Assign the current user to the comment
+            comment.video = video  # Assign the video to the comment
+            comment.save()  # Save the comment to the database
+    return redirect('content_feed')  # Redirect back to the content feed

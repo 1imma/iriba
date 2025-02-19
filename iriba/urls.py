@@ -29,5 +29,4 @@ urlpatterns = [
     path('like/<int:video_id>/', like_video, name='like_video'),
     path('profile/<str:username>/', profile, name='profile'),
     path('comment/<int:video_id>/', add_comment, name='add_comment'),
-    path('like/<int:video_id>/', like_video, name='like_video'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
