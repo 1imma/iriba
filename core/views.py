@@ -1,6 +1,7 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.models import User
 from .forms import ProfileForm, VideoForm
-from .models import Profile
+from .models import Profile, Video
 from django.contrib.auth.decorators import login_required
 
 
@@ -30,3 +31,22 @@ def upload_video(request):
     else:
         form = VideoForm()
     return render(request, 'upload_video.html', {'form': form})
+
+def content_feed(request):
+    videos = Video.objects.all().order_by('-created_at')  # Newest videos first
+    return render(request, 'content_feed.html', {'videos': videos})
+
+
+def like_video(request, video_id):
+    video = get_object_or_404(Video, id=video_id)
+    if request.user in video.likes.all():
+        video.likes.remove(request.user)  # Unlike the video
+    else:
+        video.likes.add(request.user)  # Like the video
+    return redirect('content_feed')
+
+
+def profile(request, username):
+    user = get_object_or_404(User, username=username)
+    videos = Video.objects.filter(user=user).order_by('-created_at')
+    return render(request, 'profile.html', {'profile_user': user, 'videos': videos})

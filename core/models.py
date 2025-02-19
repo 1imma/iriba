@@ -17,6 +17,7 @@ class Video(models.Model):
     video_file = models.FileField(upload_to='videos/')
     thumbnail = models.ImageField(upload_to='thumbnails/', blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
+    likes = models.ManyToManyField(User, related_name='liked_videos', blank=True)  # Add this line
 
     def __str__(self):
         return self.title

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Content Feed - iRIBA</title>
+    <style>
+        .video-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 20px;
+        }
+        video {
+            width: 100%;
+            max-width: 400px;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>Content Feed</h1>
+    <div>
+        {% for video in videos %}
+            <div class="video-container">
+                <h2>{{ video.title }}</h2>
+                <video controls>
+                    <source src="{{ video.video_file.url }}" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <p>{{ video.description }}</p>
+                <div>
+                    <a href="{% url 'like_video' video.id %}">
+                        {% if request.user in video.likes.all %}
+                            Unlike
+                        {% else %}
+                            Like
+                        {% endif %}
+                    </a> ({{ video.likes.count }} likes)
+                    <button>Comment</button>
+                    <button>Share</button>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</body>
+</html>
