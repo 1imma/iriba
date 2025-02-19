@@ -15,7 +15,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from core.views import upload_video,home,content_feed,like_video,profile
+from core.views import upload_video,home,content_feed,like_video,profile, add_comment
 from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import path, include  # Add include
@@ -28,4 +28,6 @@ urlpatterns = [
     path('feed/', content_feed, name='content_feed'),
     path('like/<int:video_id>/', like_video, name='like_video'),
     path('profile/<str:username>/', profile, name='profile'),
+    path('comment/<int:video_id>/', add_comment, name='add_comment'),
+    path('like/<int:video_id>/', like_video, name='like_video'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

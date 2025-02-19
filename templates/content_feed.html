@@ -20,28 +20,38 @@
 </head>
 <body>
     <h1>Content Feed</h1>
-    <div>
-        {% for video in videos %}
-            <div class="video-container">
-                <h2>{{ video.title }}</h2>
-                <video controls>
-                    <source src="{{ video.video_file.url }}" type="video/mp4">
-                    Your browser does not support the video tag.
-                </video>
-                <p>{{ video.description }}</p>
-                <div>
-                    <a href="{% url 'like_video' video.id %}">
-                        {% if request.user in video.likes.all %}
-                            Unlike
-                        {% else %}
-                            Like
-                        {% endif %}
-                    </a> ({{ video.likes.count }} likes)
-                    <button>Comment</button>
-                    <button>Share</button>
-                </div>
-            </div>
-        {% endfor %}
+    <div class="video-container">
+        <h2>{{ video.title }}</h2>
+        <video controls>
+            <source src="{{ video.video_file.url }}" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        <p>{{ video.description }}</p>
+        <div>
+            <a href="{% url 'like_video' video.id %}">  <!-- Ensure video.id is passed -->
+                {% if request.user in video.likes.all %}
+                    Unlike
+                {% else %}
+                    Like
+                {% endif %}
+            </a> ({{ video.likes.count }} likes)
+            <button>Share</button>
+        </div>
+        <div>
+            <h3>Comments</h3>
+            <form method="post" action="{% url 'add_comment' video.id %}">
+                {% csrf_token %}
+                <textarea name="text" placeholder="Add a comment..."></textarea>
+                <button type="submit">Comment</button>
+            </form>
+            <ul>
+                {% for comment in video.comments.all %}
+                    <li>
+                        <strong>{{ comment.user.username }}</strong>: {{ comment.text }}
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
     </div>
 </body>
 </html>
