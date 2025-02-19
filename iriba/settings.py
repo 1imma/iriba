@@ -53,7 +53,11 @@ AUTHENTICATION_BACKENDS = [
     'allauth.account.auth_backends.AuthenticationBackend',
 ]
 
-LOGIN_REDIRECT_URL = 'home'
+# Email settings (for development)
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # Print emails to the console
+ACCOUNT_EMAIL_VERIFICATION = 'none'  # Disable email verification
+
+LOGIN_REDIRECT_URL = 'upload_video'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

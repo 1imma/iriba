@@ -24,9 +24,11 @@ def upload_video(request):
     if request.method == 'POST':
         form = VideoForm(request.POST, request.FILES)
         if form.is_valid():
-            video = form.save(commit=False)  # Don't save to the database yet
-            video.user = request.user  # Assign the current user to the video
-            video.save()  # Now save to the database
+            video = form.save(commit=False)
+            video.user = request.user
+            print(f"User: {request.user}")  # Debug: Print the current user
+            print(f"Video: {video.title}")  # Debug: Print the video title
+            video.save()
             return redirect('home')
     else:
         form = VideoForm()
