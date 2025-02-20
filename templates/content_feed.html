@@ -8,26 +8,9 @@
     <link rel="icon" href="{% static 'favicon.ico' %}" type="image/x-icon">
     <!-- Add Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        .video-container {
-            margin: 20px;
-        }
-        video {
-            width: 100%;
-            max-width: 400px;
-            height: auto;
-        }
-        body{
-            background-color: #333333;
-            color: #fff;
-        }
-        .comment{
-            display: flex;
-            justify-content: center;
-            align-items: start;
-            flex-direction: column;
-        }
-    </style>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+
 </head>
 <body>
 
@@ -35,7 +18,9 @@
         <div class="container">
             <a class="navbar-brand" href="{% url 'home' %}">iRIBA</a>
             <div class="navbar-nav">
-                <a class="nav-link" href="{% url 'notifications' %}">Notifications</a>
+                <a class="nav-link" href="{% url 'notifications' %}">
+                    <i class="bi bi-bell"></i>  <!-- Notifications icon -->
+                </a>
             </div>
         </div>
     </nav>
@@ -50,25 +35,29 @@
             </video>
             <p>{{ video.description }}</p>
             <div>
-                <a href="{% url 'like_video' video.id %}">  <!-- Ensure video.id is passed -->
+                <a href="{% url 'like_video' video.id %}" class="btn btn-primary">
                     {% if request.user in video.likes.all %}
-                        Unlike
+                        <i class="bi bi-heart-fill"></i>  <!-- Filled heart icon for "Unlike" -->
                     {% else %}
-                        Like
+                        <i class="bi bi-heart"></i>  <!-- Outline heart icon for "Like" -->
                     {% endif %}
                 </a> ({{ video.likes.count }} likes)
-                <button onclick="shareVideo('{{ video.id }}')">Share</button> 
+                <button onclick="shareVideo('{{ video.id }}')" class="btn btn-secondary">
+                    <i class="bi bi-share"></i>  <!-- Share icon -->
+                </button>
             </div>
-            <div class="comment">
+            <div class="mt-3">
                 <h3>Comments</h3>
                 <form method="post" action="{% url 'add_comment' video.id %}">
                     {% csrf_token %}
-                    <textarea name="text" placeholder="Add a comment..." required></textarea>
-                    <button type="submit">Comment</button>
+                    <textarea name="text" placeholder="Add a comment..." required class="form-control mb-2"></textarea>
+                    <button type="submit" class="btn btn-success">
+                        <i class="bi bi-chat"></i>  <!-- Comment icon -->
+                    </button>
                 </form>
-                <ul>
+                <ul class="list-group mt-2">
                     {% for comment in video.comments.all %}
-                        <li>
+                        <li class="list-group-item">
                             <strong>{{ comment.user.username }}</strong>: {{ comment.text }}
                         </li>
                     {% endfor %}

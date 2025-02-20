@@ -1,0 +1,18 @@
+.video-container {
+    margin: 20px;
+}
+video {
+    width: 100%;
+    max-width: 400px;
+    height: auto;
+}
+body{
+    background-color: #333333;
+    color: #fff;
+}
+.comment{
+    display: flex;
+    justify-content: center;
+    align-items: start;
+    flex-direction: column;
+}
