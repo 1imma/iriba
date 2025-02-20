@@ -1,0 +1,43 @@
+.video-container {
+    margin: 20px;
+}
+video {
+    width: 100%;
+    max-width: 400px;
+    height: auto;
+}
+body{
+    background-color: #030853;
+    color: #fff;
+}
+.nav-nav{
+    color: #fff;
+}
+.comment{
+    display: flex;
+    justify-content: center;
+    align-items: start;
+    flex-direction: column;
+}
+
+/* Custom Navbar Styles */
+.custom-navbar {
+    background-color: #000000;  /* Change to your preferred color */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);  /* Optional: Add a shadow */
+}
+.navbar{
+    background-color: #000003;
+}
+
+.custom-navbar .navbar-brand,
+.custom-navbar .nav-link {
+    color: #fffefe !important;  /* Change text color to white */
+}
+
+.custom-navbar .nav-link:hover {
+    color: #FFD700 !important;  /* Change hover color to gold */
+}
+
+.custom-navbar .navbar-toggler-icon {
+    background-color: #030853;  /* Change the color of the toggler icon */
+}
