@@ -59,6 +59,10 @@ ACCOUNT_EMAIL_VERIFICATION = 'none'  # Disable email verification
 
 LOGIN_REDIRECT_URL = 'upload_video'
 
+# Static files (CSS, JavaScript, images)
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [BASE_DIR / 'static']  # Add this line
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',

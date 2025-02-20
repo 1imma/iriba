@@ -1,14 +1,15 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Content Feed - iRIBA</title>
+    <link rel="icon" href="{% static 'favicon.ico' %}" type="image/x-icon">
+    <!-- Add Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         .video-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
             margin: 20px;
         }
         video {
@@ -16,9 +17,29 @@
             max-width: 400px;
             height: auto;
         }
+        body{
+            background-color: #333333;
+            color: #fff;
+        }
+        .comment{
+            display: flex;
+            justify-content: center;
+            align-items: start;
+            flex-direction: column;
+        }
     </style>
 </head>
 <body>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+            <a class="navbar-brand" href="{% url 'home' %}">iRIBA</a>
+            <div class="navbar-nav">
+                <a class="nav-link" href="{% url 'notifications' %}">Notifications</a>
+            </div>
+        </div>
+    </nav>
+
     <h1>Content Feed</h1>
     {% for video in videos %}  <!-- Loop through all videos -->
         <div class="video-container">
@@ -36,9 +57,9 @@
                         Like
                     {% endif %}
                 </a> ({{ video.likes.count }} likes)
-                <button>Share</button>
+                <button onclick="shareVideo('{{ video.id }}')">Share</button> 
             </div>
-            <div>
+            <div class="comment">
                 <h3>Comments</h3>
                 <form method="post" action="{% url 'add_comment' video.id %}">
                     {% csrf_token %}
@@ -55,5 +76,14 @@
             </div>
         </div>
     {% endfor %}  <!-- End of loop -->
+
+    <script>
+        function shareVideo(videoId) {
+            const videoUrl = `${window.location.origin}/video/${videoId}/`;  // Construct the video URL
+            navigator.clipboard.writeText(videoUrl).then(() => {
+                alert('Link copied to clipboard!');  // Notify the user
+            });
+        }
+    </script>
 </body>
 </html>

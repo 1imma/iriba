@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
 from .forms import ProfileForm, VideoForm, CommentForm
-from .models import Profile, Video
+from .models import Profile, Video,Notification
 from django.contrib.auth.decorators import login_required
 
 
@@ -65,4 +65,36 @@ def add_comment(request, video_id):
             comment.user = request.user  # Assign the current user to the comment
             comment.video = video  # Assign the video to the comment
             comment.save()  # Save the comment to the database
+            if request.user != video.user:  # Don't notify if the user comments on their own video
+                Notification.objects.create(
+                    user=video.user,
+                    message=f'{request.user.username} commented on your video: {video.title}',
+                    link=f'/video/{video.id}/'
+                )
     return redirect('content_feed')  # Redirect back to the content feed
+
+
+def video_detail(request, video_id):
+    video = get_object_or_404(Video, id=video_id)  # Get the video by ID
+    return render(request, 'video_detail.html', {'video': video})
+
+
+def like_video(request, video_id):
+    video = get_object_or_404(Video, id=video_id)
+    if request.user in video.likes.all():
+        video.likes.remove(request.user)  # Unlike the video
+    else:
+        video.likes.add(request.user)  # Like the video
+        # Create a notification for the video owner
+        if request.user != video.user:  # Don't notify if the user likes their own video
+            Notification.objects.create(
+                user=video.user,
+                message=f'{request.user.username} liked your video: {video.title}',
+                link=f'/video/{video.id}/'
+            )
+    return redirect('content_feed')
+
+@login_required
+def notifications(request):
+    notifications = Notification.objects.filter(user=request.user).order_by('-created_at')
+    return render(request, 'notifications.html', {'notifications': notifications})

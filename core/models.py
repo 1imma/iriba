@@ -31,3 +31,14 @@ class Comment(models.Model):
 
     def __str__(self):
         return f'{self.user.username} - {self.text[:50]}'
+    
+
+class Notification(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)  # User receiving the notification
+    message = models.CharField(max_length=255)  # Notification message
+    link = models.CharField(max_length=255, blank=True)  # Link to the related content
+    created_at = models.DateTimeField(auto_now_add=True)  # Timestamp of the notification
+    is_read = models.BooleanField(default=False)  # Whether the notification has been read
+
+    def __str__(self):
+        return self.message
