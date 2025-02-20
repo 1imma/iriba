@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.core.paginator import Paginator
 from django.contrib.auth.models import User
 from .forms import ProfileForm, VideoForm, CommentForm
 from .models import Profile, Video,Notification
@@ -35,8 +36,10 @@ def upload_video(request):
     return render(request, 'upload_video.html', {'form': form})
 
 def content_feed(request):
-    videos = Video.objects.all().order_by('-created_at')  # Newest videos first
-    print(videos)
+    videos_list = Video.objects.all().order_by('-created_at')  # Fetch all videos, newest first
+    paginator = Paginator(videos_list, 5)  # Show 5 videos per page
+    page_number = request.GET.get('page')  # Get the current page number from the URL
+    videos = paginator.get_page(page_number)  # Get the videos for the current page
     return render(request, 'content_feed.html', {'videos': videos})
 
 
